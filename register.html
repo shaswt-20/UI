@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Star Protect Vehicle - Admin Registration</title>
+  <link rel="stylesheet" href="register.css">
+</head>
+<body>
+  <div class="register-container">
+    <!-- <h1>Star Protect Vehicle</h1> -->
+    <div class="register-box">
+      <h2>Admin Registration</h2>
+      
+      <!-- Registration Form Fields -->
+      <div class="input-group">
+        <label for="adminUserId">Admin User ID</label>
+        <input type="text" id="adminUserId" placeholder="Create a User ID" required>
+      </div>
+
+      <div class="input-group">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" placeholder="Create a Password" required>
+      </div>
+
+      <div class="input-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+      </div>
+
+      <!-- Register Button -->
+      <button class="register-btn" onclick="registerAdmin()">Register</button>
+      <button class="register-btn" onclick="login()">Login</button>
+
+      <!-- Success/Error Message (optional, hidden by default) -->
+      <p id="registerMessage" class="register-message" style="display: none;"></p>
+    </div>
+  </div>
+
+  <script>
+    function registerAdmin() {
+      const adminUserId = document.getElementById("adminUserId").value;
+      const adminPassword = document.getElementById("adminPassword").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const message = document.getElementById("registerMessage");
+
+      if (adminPassword !== confirmPassword) {
+        message.style.display = "block";
+        message.style.color = "red";
+        message.textContent = "Passwords do not match!";
+        return;
+      }
+
+      if (adminUserId && adminPassword) {
+        // Store credentials in local storage
+        localStorage.setItem("adminUserId", adminUserId);
+        localStorage.setItem("adminPassword", adminPassword);
+
+        message.style.display = "block";
+        message.style.color = "green";
+        message.textContent = "Registration successful! You can now log in.";
+
+        // Clear form fields
+        document.getElementById("adminUserId").value = "";
+        document.getElementById("adminPassword").value = "";
+        document.getElementById("confirmPassword").value = "";
+      } else {
+        message.style.display = "block";
+        message.style.color = "red";
+        message.textContent = "Please fill in all fields!";
+      }
+    }
+
+    function login(){
+        window.location.href="login.html";
+    }
+  </script>
+</body>
+</html>

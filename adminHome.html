@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Star Protect Vehicle</title>
+  <link rel="stylesheet" href="adminHome.css">
+</head>
+<body onload="loadAdminDashboard()">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <h1>Star Protect Vehicle</h1>
+    <ul>
+      <li><a href="#home" onclick="showSection('home')">Home</a></li>
+      <li><a href="#registerUnderwriter" onclick="showSection('registerUnderwriter')">Register Underwriter</a></li>
+      <li><a href="#manageUnderwriters" onclick="showSection('manageUnderwriters')">Manage Underwriters</a></li>
+      <li><button class="logout-btn" onclick="logout()">Logout</button></li>
+    </ul>
+    <p id="adminWelcome"></p>
+  </nav>
+
+  <!-- Home Section -->
+  <section id="home" class="content-section">
+    <h2>Welcome to the Admin Dashboard</h2>
+    <p>Here you can manage all underwriters for the Star Protect Vehicle system. Use the navigation to register, view, update, or delete underwriters.</p>
+  </section>
+
+  <!-- Register Underwriter Section -->
+  <section id="registerUnderwriter" class="content-section" style="display: none;">
+    <h2>Register New Underwriter</h2>
+    <form id="underwriterForm" onsubmit="registerUnderwriter(event)">
+      <div class="input-group">
+        <label for="underwriterId">Underwriter ID</label>
+        <input type="text" id="underwriterId" readonly>
+      </div>
+      <div class="input-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" maxlength="50" required>
+      </div>
+      <div class="input-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" required>
+      </div>
+      <div class="input-group">
+        <label for="joiningDate">Joining Date</label>
+        <input type="date" id="joiningDate" required>
+      </div>
+      <div class="input-group">
+        <label for="defaultPassword">Default Password</label>
+        <input type="password" id="defaultPassword" required>
+      </div>
+      <button type="submit">Register Underwriter</button>
+    </form>
+  </section>
+
+  <!-- Manage Underwriters Section -->
+  <section id="manageUnderwriters" class="content-section" style="display: none;">
+    <h2>Manage Underwriters</h2>
+    <!-- Search, Update, Delete, and View All Underwriters options as needed -->
+  </section>
+
+  <script>
+    // Load Admin Dashboard
+    function loadAdminDashboard() {
+      const adminUsername = localStorage.getItem("adminUserId");
+      document.getElementById("adminWelcome").textContent = `Welcome, ${adminUsername}`;
+      document.getElementById("underwriterId").value = generateUnderwriterId();
+    }
+
+    // Generate Unique Underwriter ID
+    function generateUnderwriterId() {
+      const underwriters = JSON.parse(localStorage.getItem("underwriters")) || [];
+      return "UW" + (underwriters.length + 1).toString().padStart(4, "0");
+    }
+
+    // Show Section
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll(".content-section");
+      sections.forEach(section => section.style.display = "none");
+      document.getElementById(sectionId).style.display = "block";
+    }
+
+    // Register Underwriter
+    function registerUnderwriter(event) {
+      event.preventDefault();
+      const underwriters = JSON.parse(localStorage.getItem("underwriters")) || [];
+      const underwriter = {
+        underwriterId: document.getElementById("underwriterId").value,
+        name: document.getElementById("name").value,
+        dob: document.getElementById("dob").value,
+        joiningDate: document.getElementById("joiningDate").value,
+        password: document.getElementById("defaultPassword").value
+      };
+      underwriters.push(underwriter);
+      localStorage.setItem("underwriters", JSON.stringify(underwriters));
+      alert("Underwriter registered successfully!");
+      document.getElementById("underwriterForm").reset();
+      document.getElementById("underwriterId").value = generateUnderwriterId();
+    }
+
+    // Logout
+    function logout() {
+      localStorage.removeItem("adminUserId");
+      localStorage.removeItem("adminPassword");
+      alert("You have been logged out.");
+      window.location.href = "login.html";  // Redirect to login page
+    }
+  </script>
+</body>
+</html>

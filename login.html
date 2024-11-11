@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Protect Vehicle - Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <h1>Star Protect Vehicle</h1>
+        <div class="login-box">
+            <h2>Login</h2>
+
+            <!-- Login Type Selection -->
+            <label for="loginType">Select Login Type:</label>
+            <select class="loginType" id="loginType" onchange="toggleLoginFields()">
+                <option value="admin">Admin</option>
+                <option value="underwriter">Underwriter</option>
+            </select>
+
+            <!-- Login Form Fields -->
+            <div class="input-group">
+                <label for="userId">User ID</label>
+                <input type="text" id="userId" placeholder="Enter User ID" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter Password" required>
+            </div>
+
+            <!-- Login Button -->
+            <button class="login-btn" onclick="login()">Login</button>
+            <button class="login-btn" onclick="register()">Admin Registration</button>
+
+            <!-- Error Message (optional, hidden by default) -->
+            <p id="errorMessage" class="error-message" style="display: none;">Invalid login. Please try again.</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleLoginFields() {
+            const loginType = document.getElementById("loginType").value;
+            const userIdInput = document.getElementById("userId");
+
+            if (loginType === "admin") {
+                userIdInput.placeholder = "Default Admin User ID";
+            } else {
+                userIdInput.placeholder = "Enter Underwriter User ID";
+            }
+        }
+
+        function login() {
+            // Retrieve input values from the login form
+            const loginType = document.getElementById("loginType").value;
+            const userId = document.getElementById("userId").value;
+            const password = document.getElementById("password").value;
+            const errorMessage = document.getElementById("errorMessage");
+
+            // Retrieve stored admin credentials from local storage
+            const storedAdminUserId = localStorage.getItem("adminUserId");
+            const storedAdminPassword = localStorage.getItem("adminPassword");
+
+            // Authentication logic for Admin login
+            if (loginType === "admin") {
+                if (userId === storedAdminUserId && password === storedAdminPassword) {
+                    // Successful login
+                    alert("Login successful! Welcome, Admin.");
+                    errorMessage.style.display = "none";
+                    // Redirect to admin dashboard or next page
+                    window.location.href = "adminHome.html";
+                } else {
+                    // Failed login
+                    errorMessage.style.display = "block";
+                    errorMessage.textContent = "Invalid Admin credentials. Please try again.";
+                }
+            } else {
+                // For Underwriter login, you could add separate logic if needed
+                errorMessage.style.display = "block";
+                errorMessage.textContent = "Underwriter login not implemented yet.";
+            }
+        }
+
+        function register() {
+            window.location.href = "register.html"
+        }
+    </script>
+</body>
+
+</html>
